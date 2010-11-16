@@ -7,6 +7,7 @@
 #include <QMenuBar>
 #include <QMenu>
 
+#include <QInputDialog>
 #include <QFileDialog>
 
 struct Glassmoon::Impl
@@ -54,8 +55,17 @@ Glassmoon::initMenu()
 void
 Glassmoon::addProject()
 {
-    // プロジェクト名取得
+    QString projectName = QInputDialog::getText(pImpl->mainWindow,
+            tr("new project"),
+            tr("project name"));
 
+    if (projectName.isNull() || projectName.isEmpty()) {
+        return;
+    }
+
+    // プロジェクト名の重複チェックが必要
+    Project *project = new Project(pImpl->mainWindow, projectName);
+    pImpl->mainWindow->addProject(project);
 }
 
 void

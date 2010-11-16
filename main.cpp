@@ -1,10 +1,10 @@
 #include <QApplication>
-#include <QMainWindow>
+#include "glassmoon.h"
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-    QMainWindow *win = new QMainWindow();
-    win->show();
+    Glassmoon *glassmoon = new Glassmoon();
+    glassmoon->show();
     return app.exec();
 }

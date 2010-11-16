@@ -9,3 +9,8 @@ INCLUDEPATH += .
 
 # Input
 SOURCES += main.cpp
+HEADERS += glassmoon.h interfaces.h
+SOURCES += glassmoon.cpp
+HEADERS += mainwindow.h project.h 
+SOURCES += mainwindow.cpp project.cpp
+

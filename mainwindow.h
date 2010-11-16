@@ -2,24 +2,22 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "interfaces.h"
 
 class QMdiArea;
 
 class MainWindow
-    :public QMainWindow
+    :public QMainWindow, public IProjectContainer
 {
     Q_OBJECT
     struct Impl;
     Impl *pImpl;
-protected:
-    void initMenu();
-    QMdiArea *activeArea();
-    void openFile(const QString &fileName);
 public:
     MainWindow();
     virtual ~MainWindow();
 public slots:
-    void on_fileOpenAction_triggered();
+    virtual IProject *currentProject();
+    virtual void addProject(IProject *);
 };
 
 #endif
