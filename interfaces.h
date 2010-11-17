@@ -3,7 +3,20 @@
 
 class QWidget;
 
+class IBookmarkContainer
+{
+public:
+    virtual int bookmarkCount() = 0;
+    virtual const QString &bookmark(int index) = 0;
+    virtual int indexOfBookmark(const QString &path) = 0;
+public slots:
+    virtual void addBookmark(const QString& path) = 0;
+signals:
+    void bookmarkAdded(const QString &path);
+};
+
 class IProject
+    :public IBookmarkContainer
 {
 public slots:
     virtual QWidget *projectView() = 0;

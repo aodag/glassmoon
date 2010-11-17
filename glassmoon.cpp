@@ -9,10 +9,14 @@
 
 #include <QInputDialog>
 #include <QFileDialog>
+#include <QListView>
+#include <QDockWidget>
+#include <QDebug>
 
 struct Glassmoon::Impl
 {
     MainWindow *mainWindow;
+    QListView *bookmarkView;
 };
 
 Glassmoon::Glassmoon()
@@ -23,6 +27,10 @@ Glassmoon::Glassmoon()
     Project *defaultProject = new Project(pImpl->mainWindow,
                 tr("default"));
     pImpl->mainWindow->addProject(defaultProject);
+    QDockWidget *dock = new QDockWidget(tr("bookmark"), pImpl->mainWindow);
+    pImpl->bookmarkView = new QListView(dock);
+    dock->setWidget(pImpl->bookmarkView);
+    pImpl->mainWindow->addDockWidget(Qt::LeftDockWidgetArea, dock);
 }
 
 Glassmoon::~Glassmoon()
@@ -50,6 +58,9 @@ Glassmoon::initMenu()
     QAction *projectAddAction = projectMenu->addAction(tr("&Add"));
     connect(projectAddAction, SIGNAL(triggered()),
             this, SLOT(addProject()));
+    QAction *addBookmarkAction = projectMenu->addAction(tr("Add &Bookmark"));
+    connect(addBookmarkAction, SIGNAL(triggered()),
+            this, SLOT(addBookmark()));
 }
 
 void
@@ -70,6 +81,22 @@ Glassmoon::addProject()
 }
 
 void
+Glassmoon::addBookmark()
+{
+    QString path = QFileDialog::getExistingDirectory(pImpl->mainWindow);
+    IProject *project = currentProject();
+    project->addBookmark(path);
+    qDebug() << path;
+}
+
+IProject *
+Glassmoon::currentProject()
+{
+    IProject *project = pImpl->mainWindow->currentProject();
+    return project;
+}
+
+void
 Glassmoon::openFile()
 {
     QString fileName = QFileDialog::getOpenFileName();
@@ -77,7 +104,7 @@ Glassmoon::openFile()
         return;
     }
 
-    IProject *project = pImpl->mainWindow->currentProject();
+    IProject *project = currentProject();
     project->loadFile(fileName);
 }
 
