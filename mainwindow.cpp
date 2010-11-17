@@ -8,6 +8,7 @@ struct MainWindow::Impl
 {
     QTabWidget *tabWidget;
     QMap<QString, IProject *> projects;
+    QMap<QString, QWidget *> projectViews;
 };
 
 MainWindow::MainWindow()
@@ -37,4 +38,12 @@ MainWindow::addProject(IProject *project)
     QWidget *projectView = project->projectView();
     pImpl->tabWidget->addTab(projectView, projectName);
     pImpl->projects[projectName] = project;
+    pImpl->projectViews[projectName] = projectView;
+}
+
+void
+MainWindow::setCurrentProject(IProject *project)
+{
+    QWidget *view = pImpl->projectViews[project->name()];
+    pImpl->tabWidget->setCurrentWidget(view);
 }

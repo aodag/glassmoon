@@ -19,6 +19,7 @@ public slots:
     // プロジェクト一覧取得
     // プロジェクト名で取得
     // カレントプロジェクトを変更
+    virtual void setCurrentProject(IProject *) = 0;
 };
 
 #endif

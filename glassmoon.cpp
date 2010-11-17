@@ -66,6 +66,7 @@ Glassmoon::addProject()
     // プロジェクト名の重複チェックが必要
     Project *project = new Project(pImpl->mainWindow, projectName);
     pImpl->mainWindow->addProject(project);
+    pImpl->mainWindow->setCurrentProject(project);
 }
 
 void

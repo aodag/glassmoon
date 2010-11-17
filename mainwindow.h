@@ -18,6 +18,7 @@ public:
 public slots:
     virtual IProject *currentProject();
     virtual void addProject(IProject *);
+    virtual void setCurrentProject(IProject *);
 };
 
 #endif
