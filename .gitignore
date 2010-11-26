@@ -1,0 +1,6 @@
+moc_*
+*.o
+.*
+Makefile
+*.app
+
