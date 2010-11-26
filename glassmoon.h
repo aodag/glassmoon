@@ -25,6 +25,7 @@ public slots:
     void saveFile();
     void saveFileAs();
     void executeScript(const QString &script);
+    void executeScriptFile();
     void executeScriptFile(const QString &fileName);
     void addScriptPath(const QString &path);
     void show();

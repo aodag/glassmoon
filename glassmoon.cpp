@@ -13,10 +13,13 @@
 #include <QDockWidget>
 #include <QDebug>
 
+#include <QScriptEngine>
+
 struct Glassmoon::Impl
 {
     MainWindow *mainWindow;
     QListView *bookmarkView;
+    QScriptEngine *engine;
 };
 
 Glassmoon::Glassmoon()
@@ -31,6 +34,9 @@ Glassmoon::Glassmoon()
     pImpl->bookmarkView = new QListView(dock);
     dock->setWidget(pImpl->bookmarkView);
     pImpl->mainWindow->addDockWidget(Qt::LeftDockWidgetArea, dock);
+    pImpl->engine = new QScriptEngine(this);
+    QScriptValue me = pImpl->engine->newQObject(this);
+    pImpl->engine->globalObject().setProperty("application", me);
 }
 
 Glassmoon::~Glassmoon()
@@ -61,6 +67,10 @@ Glassmoon::initMenu()
     QAction *addBookmarkAction = projectMenu->addAction(tr("Add &Bookmark"));
     connect(addBookmarkAction, SIGNAL(triggered()),
             this, SLOT(addBookmark()));
+    QMenu *scriptMenu = mbar->addMenu(tr("&Script"));
+    QAction *executeFileAction = scriptMenu->addAction(tr("Execute File"));
+    connect(executeFileAction, SIGNAL(triggered()),
+            this, SLOT(executeScriptFile()));
 }
 
 void
@@ -125,8 +135,27 @@ Glassmoon::executeScript(const QString &script)
 }
 
 void
+Glassmoon::executeScriptFile()
+{
+    QString fileName = QFileDialog::getOpenFileName();
+    if (fileName.isNull() || fileName.isEmpty()) {
+        return;
+    }
+    executeScriptFile(fileName);
+}
+
+void
 Glassmoon::executeScriptFile(const QString &fileName)
 {
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly)) {
+        return;
+    }
+    
+    QTextStream st(&file);
+    QString contents = st.readAll();
+    file.close();
+    pImpl->engine->evaluate(contents, fileName);
 }
 
 void 
