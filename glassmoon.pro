@@ -10,8 +10,8 @@ QT += script
 
 # Input
 SOURCES += main.cpp
-HEADERS += glassmoon.h interfaces.h
-SOURCES += glassmoon.cpp
+HEADERS += glassmoon.h interfaces.h editor.h
+SOURCES += glassmoon.cpp editor.cpp
 HEADERS += mainwindow.h project.h 
 SOURCES += mainwindow.cpp project.cpp
 HEADERS += bookmark.h
