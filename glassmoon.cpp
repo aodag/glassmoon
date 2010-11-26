@@ -6,6 +6,7 @@
 #include <QAction>
 #include <QMenuBar>
 #include <QMenu>
+#include <QKeySequence>
 
 #include <QInputDialog>
 #include <QFileDialog>
@@ -58,8 +59,13 @@ Glassmoon::initMenu()
 
     QMenu *fileMenu = mbar->addMenu(tr("&File"));
     QAction *fileOpenAction = fileMenu->addAction(tr("&Open"));
+    fileOpenAction->setShortcut(QKeySequence::Open);
     connect(fileOpenAction, SIGNAL(triggered()),
             this, SLOT(openFile()));
+    QAction *fileSaveAsAction = fileMenu->addAction(tr("Save &As"));
+    fileSaveAsAction->setShortcut(QKeySequence::SaveAs);
+    connect(fileSaveAsAction, SIGNAL(triggered()),
+            this, SLOT(saveFileAs()));
     QMenu *projectMenu = mbar->addMenu(tr("&Project"));
     QAction *projectAddAction = projectMenu->addAction(tr("&Add"));
     connect(projectAddAction, SIGNAL(triggered()),
@@ -127,6 +133,13 @@ Glassmoon::saveFile()
 void 
 Glassmoon::saveFileAs()
 {
+    QString fileName = QFileDialog::getSaveFileName();
+    if (fileName.isEmpty() || fileName.isNull()) {
+        return;
+    }
+
+    IProject *project = currentProject();
+    project->saveFile(fileName);
 }
 
 void

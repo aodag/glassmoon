@@ -3,6 +3,7 @@
 #include <QVBoxLayout>
 #include <QFile>
 #include <QTextStream>
+#include <QMessageBox>
 
 Editor::Editor(QWidget *parent)
     :QWidget(parent)
@@ -80,11 +81,13 @@ TextEditor::save(const QString &fileName)
 {
     QFile file(fileName);
     if (!file.open(QFile::WriteOnly)) {
-        // TODO: show error
+        QMessageBox::warning(this, tr("file open error"),
+                tr("can't open file:"));
         return;
     }
     QTextStream st(&file);
     st << pImpl->textEdit->document()->toPlainText();
+    st.flush();
     file.close();
     pImpl->fileName = fileName;
 }

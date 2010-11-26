@@ -5,6 +5,8 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
+#include <QDebug>
+#include <QMessageBox>
 
 #include "bookmark.h"
 #include "editor.h"
@@ -53,7 +55,14 @@ Project::loadFile(const QString &fileName)
     QMdiSubWindow *sub = pImpl->view->addSubWindow(editor);
     sub->setWindowTitle(fileName);
     sub->show();
+}
 
+void
+Project::saveFile(const QString &fileName)
+{
+    QMdiSubWindow *sub = pImpl->view->activeSubWindow();
+    Editor *editor = reinterpret_cast<Editor *>(sub->widget());
+    editor->save(fileName);
 }
 
 QWidget *

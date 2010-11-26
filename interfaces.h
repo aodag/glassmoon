@@ -22,6 +22,7 @@ public slots:
     virtual QWidget *projectView() = 0;
     virtual const QString &name() = 0;
     virtual void loadFile(const QString& fileName) = 0;
+    virtual void saveFile(const QString& fileName) = 0;
 };
 
 class IProjectContainer
