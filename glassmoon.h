@@ -10,7 +10,9 @@ class Glassmoon
     Q_OBJECT
     struct Impl;
     Impl *pImpl;
+    static Glassmoon *application;
 public:
+    static QString getOpenFileName();
     Glassmoon();
     virtual ~Glassmoon();
     const QStringList scriptPath();

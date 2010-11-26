@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include "glassmoon.h"
 #include "bookmark.h"
 #include "editor.h"
 
@@ -57,12 +58,33 @@ Project::loadFile(const QString &fileName)
     sub->show();
 }
 
-void
-Project::saveFile(const QString &fileName)
+Editor *
+Project::currentEditor()
 {
     QMdiSubWindow *sub = pImpl->view->activeSubWindow();
     Editor *editor = reinterpret_cast<Editor *>(sub->widget());
+    return editor;
+}
+
+void
+Project::saveFile(const QString &fileName)
+{
+    Editor *editor = currentEditor();
     editor->save(fileName);
+}
+
+void
+Project::saveFile()
+{
+    Editor *editor = currentEditor();
+    if (editor->hasFileName()) {
+        editor->save();
+    } else {
+        QString fileName = Glassmoon::getOpenFileName();
+        if (fileName.isNull() || fileName.isEmpty()) {
+            editor->save(fileName);
+        }
+    }
 }
 
 QWidget *

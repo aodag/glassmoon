@@ -16,12 +16,21 @@
 
 #include <QScriptEngine>
 
+
 struct Glassmoon::Impl
 {
     MainWindow *mainWindow;
     QListView *bookmarkView;
     QScriptEngine *engine;
 };
+
+Glassmoon *Glassmoon::application = 0;
+
+QString
+Glassmoon::getOpenFileName()
+{
+    return QFileDialog::getOpenFileName(application->pImpl->mainWindow);
+}
 
 Glassmoon::Glassmoon()
 {
@@ -38,6 +47,7 @@ Glassmoon::Glassmoon()
     pImpl->engine = new QScriptEngine(this);
     QScriptValue me = pImpl->engine->newQObject(this);
     pImpl->engine->globalObject().setProperty("application", me);
+    Glassmoon::application = this;
 }
 
 Glassmoon::~Glassmoon()
@@ -62,6 +72,10 @@ Glassmoon::initMenu()
     fileOpenAction->setShortcut(QKeySequence::Open);
     connect(fileOpenAction, SIGNAL(triggered()),
             this, SLOT(openFile()));
+    QAction *fileSaveAction = fileMenu->addAction(tr("&Save"));
+    fileSaveAction->setShortcut(QKeySequence::Save);
+    connect(fileSaveAction, SIGNAL(triggered()),
+            this, SLOT(saveFile()));
     QAction *fileSaveAsAction = fileMenu->addAction(tr("Save &As"));
     fileSaveAsAction->setShortcut(QKeySequence::SaveAs);
     connect(fileSaveAsAction, SIGNAL(triggered()),
@@ -127,6 +141,8 @@ Glassmoon::openFile()
 void
 Glassmoon::saveFile()
 {
+    IProject *project = currentProject();
+    project->saveFile();
 }
 
 

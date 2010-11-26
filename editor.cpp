@@ -4,6 +4,52 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QKeyEvent>
+
+class MyTextEdit
+    :public QTextEdit
+{
+    bool _expandTab;
+protected:
+    virtual void keyPressEvent(QKeyEvent *keyEvent);
+public:
+    MyTextEdit(QWidget *parent);
+    virtual ~MyTextEdit();
+    bool expandTab();
+    void setExpandTab(bool expand);
+};
+
+bool
+MyTextEdit::expandTab()
+{
+    return _expandTab;
+}
+
+void 
+MyTextEdit::setExpandTab(bool expand)
+{
+    _expandTab = expand;
+}
+
+void 
+MyTextEdit::keyPressEvent(QKeyEvent *keyEvent)
+{
+    if (_expandTab && keyEvent->key() == Qt::Key_Tab) {
+        insertPlainText("    ");
+    } else {
+        QTextEdit::keyPressEvent(keyEvent);
+    }
+}
+
+MyTextEdit::MyTextEdit(QWidget *parent)
+    :QTextEdit(parent), _expandTab(true)
+{
+}
+
+MyTextEdit::~MyTextEdit()
+{
+}
+
 
 Editor::Editor(QWidget *parent)
     :QWidget(parent)
@@ -25,7 +71,7 @@ TextEditor::TextEditor(QWidget *parent)
     :Editor(parent)
 {
     pImpl = new Impl();
-    pImpl->textEdit = new QTextEdit(this);
+    pImpl->textEdit = new MyTextEdit(this);
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(pImpl->textEdit);
     this->setLayout(layout);
@@ -53,7 +99,8 @@ TextEditor::open(const QString &fileName)
 {
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly)) {
-        // TODO: show error
+        QMessageBox::warning(this, tr("file open error"),
+                tr("can't open file:"));
         return;
     }
     QTextStream st(&file);
@@ -68,7 +115,8 @@ TextEditor::save()
 {
     QFile file(pImpl->fileName);
     if (!file.open(QFile::WriteOnly)) {
-        // TODO: show error
+        QMessageBox::warning(this, tr("file open error"),
+                tr("can't open file:"));
         return;
     }
     QTextStream st(&file);

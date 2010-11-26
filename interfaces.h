@@ -23,6 +23,7 @@ public slots:
     virtual const QString &name() = 0;
     virtual void loadFile(const QString& fileName) = 0;
     virtual void saveFile(const QString& fileName) = 0;
+    virtual void saveFile() = 0;
 };
 
 class IProjectContainer
