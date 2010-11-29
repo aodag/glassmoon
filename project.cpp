@@ -27,7 +27,7 @@ Project::Project(QWidget *parent, const QString &name)
     pImpl = new Impl();
     pImpl->name = name;
     pImpl->view = new QMdiArea(parent);
-    pImpl->bookmarkModel = new BookmarkModel(this, this);
+    pImpl->bookmarkModel = new BookmarkModel(this);
 }
 
 Project::~Project()

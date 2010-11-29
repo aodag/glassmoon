@@ -10,7 +10,7 @@ QT += script
 
 # Input
 SOURCES += main.cpp
-HEADERS += glassmoon.h interfaces.h 
+HEADERS += glassmoon.h  
 SOURCES += glassmoon.cpp 
 HEADERS += editor.h highlighter.h
 SOURCES += editor.cpp highlighter.cpp

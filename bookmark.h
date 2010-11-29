@@ -2,7 +2,8 @@
 #define BOOKMARK_H
 
 #include <QAbstractItemModel>
-#include "interfaces.h"
+
+class Project;
 
 class BookmarkModel
     :public QAbstractItemModel
@@ -11,7 +12,7 @@ class BookmarkModel
     struct Impl;
     Impl *pImpl;
 public:
-    BookmarkModel(QObject *parent, IBookmarkContainer *);
+    BookmarkModel(Project *);
     ~BookmarkModel();
     virtual int	columnCount ( const QModelIndex & parent = QModelIndex() ) const;
     virtual QVariant	data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;

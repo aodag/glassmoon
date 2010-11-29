@@ -1,18 +1,19 @@
 #include "bookmark.h"
+#include "project.h"
 
 struct BookmarkModel::Impl
 {
-    IBookmarkContainer *bookmarkContainer;
+    Project *project;
 };
 
 
 
-BookmarkModel::BookmarkModel(QObject *parent, IBookmarkContainer *bookmarkContainer)
-    :QAbstractItemModel(parent)
+BookmarkModel::BookmarkModel(Project *project)
+    :QAbstractItemModel(project)
 {
     pImpl = new Impl();
-    pImpl->bookmarkContainer = bookmarkContainer;
-    connect(parent, SIGNAL(bookmarkAdded(const QString &)),
+    pImpl->project = project;
+    connect(project, SIGNAL(bookmarkAdded(const QString &)),
             this, SLOT(onBookmarkAdded(const QString &)));
 }
 
@@ -37,7 +38,7 @@ BookmarkModel::data(const QModelIndex &index, int role) const
 
     if (index.row() < rowCount()) {
         if (role == Qt::DisplayRole) {
-            return QVariant(pImpl->bookmarkContainer->bookmark(index.row()));
+            return QVariant(pImpl->project->bookmark(index.row()));
         } else {
             return QVariant();
         }
@@ -65,13 +66,13 @@ BookmarkModel::parent(const QModelIndex &index) const
 int	
 BookmarkModel::rowCount(const QModelIndex &parent) const
 {
-    return pImpl->bookmarkContainer->bookmarkCount();
+    return pImpl->project->bookmarkCount();
 }
 
 void
 BookmarkModel::onBookmarkAdded(const QString &path)
 {
-    int pos = pImpl->bookmarkContainer->indexOfBookmark(path);
+    int pos = pImpl->project->indexOfBookmark(path);
     if (pos > -1) {
         QModelIndex index = createIndex(pos, 0);
         emit dataChanged(index, index);

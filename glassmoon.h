@@ -2,7 +2,8 @@
 #define GLASSMOON_H
 
 #include <QObject>
-#include "interfaces.h"
+
+class Project;
 
 class Glassmoon
     :public QObject
@@ -18,7 +19,7 @@ public:
     const QStringList scriptPath();
 protected:
     void initMenu();
-    IProject* currentProject();
+    Project* currentProject();
     
 public slots:
     void addProject();

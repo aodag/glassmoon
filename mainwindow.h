@@ -2,12 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "interfaces.h"
+
+class Project;
 
 class QMdiArea;
 
 class MainWindow
-    :public QMainWindow, public IProjectContainer
+    :public QMainWindow
 {
     Q_OBJECT
     struct Impl;
@@ -16,9 +17,9 @@ public:
     MainWindow();
     virtual ~MainWindow();
 public slots:
-    virtual IProject *currentProject();
-    virtual void addProject(IProject *);
-    virtual void setCurrentProject(IProject *);
+    virtual Project *currentProject();
+    virtual void addProject(Project *);
+    virtual void setCurrentProject(Project *);
 };
 
 #endif

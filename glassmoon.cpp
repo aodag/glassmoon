@@ -1,5 +1,4 @@
 #include "glassmoon.h"
-#include "interfaces.h"
 #include "mainwindow.h"
 #include "project.h"
 
@@ -114,15 +113,15 @@ void
 Glassmoon::addBookmark()
 {
     QString path = QFileDialog::getExistingDirectory(pImpl->mainWindow);
-    IProject *project = currentProject();
+    Project *project = currentProject();
     project->addBookmark(path);
     qDebug() << path;
 }
 
-IProject *
+Project *
 Glassmoon::currentProject()
 {
-    IProject *project = pImpl->mainWindow->currentProject();
+    Project *project = pImpl->mainWindow->currentProject();
     return project;
 }
 
@@ -134,14 +133,14 @@ Glassmoon::openFile()
         return;
     }
 
-    IProject *project = currentProject();
+    Project *project = currentProject();
     project->loadFile(fileName);
 }
 
 void
 Glassmoon::saveFile()
 {
-    IProject *project = currentProject();
+    Project *project = currentProject();
     project->saveFile();
 }
 
@@ -154,7 +153,7 @@ Glassmoon::saveFileAs()
         return;
     }
 
-    IProject *project = currentProject();
+    Project *project = currentProject();
     project->saveFile(fileName);
 }
 

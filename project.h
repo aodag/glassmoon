@@ -2,13 +2,12 @@
 #define PROJECT_H
 
 #include <QObject>
-#include "interfaces.h"
 
 class QAbstractItemModel;
 class Editor;
 
 class Project
-    :public QObject, public IProject
+    :public QObject
 {
     Q_OBJECT
     struct Impl;

@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "project.h"
 
 #include <QTabWidget>
 #include <QMap>
@@ -7,7 +8,7 @@
 struct MainWindow::Impl
 {
     QTabWidget *tabWidget;
-    QMap<QString, IProject *> projects;
+    QMap<QString, Project *> projects;
     QMap<QString, QWidget *> projectViews;
 };
 
@@ -23,7 +24,7 @@ MainWindow::~MainWindow()
     delete pImpl;
 }
 
-IProject *
+Project *
 MainWindow::currentProject()
 {
     int currentIndex = pImpl->tabWidget->currentIndex();
@@ -32,7 +33,7 @@ MainWindow::currentProject()
 }
 
 void
-MainWindow::addProject(IProject *project)
+MainWindow::addProject(Project *project)
 {
     const QString &projectName = project->name();
     QWidget *projectView = project->projectView();
@@ -42,7 +43,7 @@ MainWindow::addProject(IProject *project)
 }
 
 void
-MainWindow::setCurrentProject(IProject *project)
+MainWindow::setCurrentProject(Project *project)
 {
     QWidget *view = pImpl->projectViews[project->name()];
     pImpl->tabWidget->setCurrentWidget(view);
