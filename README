@@ -6,13 +6,18 @@ Glassmoon
 requirements
 -------------------------
 
-- Qt 4.7 or later
+- `Qt 4.7 <http://qt.nokia.com/>`_ or later
+- `Visual C++ 2008 Express Edition <http://www.microsoft.com/japan/msdn/vstudio/2008/product/express/>`_ 
 
 build
 -------------------------
 
-::
+UNIX::
 
  $ qmake
  $ make
 
+Windows::
+
+ > qmake
+ > nmake
