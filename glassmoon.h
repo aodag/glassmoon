@@ -14,6 +14,7 @@ class Glassmoon
     static Glassmoon *application;
 public:
     static QString getOpenFileName();
+    static QString getSaveFileName();
     Glassmoon();
     virtual ~Glassmoon();
     const QStringList scriptPath();
@@ -24,6 +25,7 @@ protected:
 public slots:
     void addProject();
     void addBookmark();
+    void newFile();
     void openFile();
     void saveFile();
     void saveFileAs();

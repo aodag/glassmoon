@@ -12,6 +12,7 @@
 #include <QListView>
 #include <QDockWidget>
 #include <QDebug>
+#include <QMessageBox>
 
 #include <QScriptEngine>
 
@@ -29,6 +30,12 @@ QString
 Glassmoon::getOpenFileName()
 {
     return QFileDialog::getOpenFileName(application->pImpl->mainWindow);
+}
+
+QString
+Glassmoon::getSaveFileName()
+{
+    return QFileDialog::getSaveFileName(application->pImpl->mainWindow);
 }
 
 Glassmoon::Glassmoon()
@@ -67,6 +74,10 @@ Glassmoon::initMenu()
     QMenuBar *mbar = pImpl->mainWindow->menuBar();
 
     QMenu *fileMenu = mbar->addMenu(tr("&File"));
+    QAction *fileNewAction = fileMenu->addAction(tr("&New"));
+    fileNewAction->setShortcut(QKeySequence::New);
+    connect(fileNewAction, SIGNAL(triggered()),
+            this, SLOT(newFile()));
     QAction *fileOpenAction = fileMenu->addAction(tr("&Open"));
     fileOpenAction->setShortcut(QKeySequence::Open);
     connect(fileOpenAction, SIGNAL(triggered()),
@@ -123,6 +134,13 @@ Glassmoon::currentProject()
 {
     Project *project = pImpl->mainWindow->currentProject();
     return project;
+}
+
+void
+Glassmoon::newFile()
+{
+    Project *project = currentProject();
+    project->newFile();
 }
 
 void

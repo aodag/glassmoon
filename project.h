@@ -21,6 +21,7 @@ public:
     virtual int indexOfBookmark(const QString &path);
     virtual Editor *currentEditor();
 public slots:
+    void newFile();
     void loadFile(const QString &fileName);
     void saveFile(const QString &fileName);
     void saveFile();

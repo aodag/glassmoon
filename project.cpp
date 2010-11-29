@@ -47,6 +47,14 @@ Project::name()
 }
 
 void
+Project::newFile()
+{
+    TextEditor *editor = new TextEditor(pImpl->view);
+    QMdiSubWindow *sub = pImpl->view->addSubWindow(editor);
+    sub->show();
+}
+
+void
 Project::loadFile(const QString &fileName)
 {
 
@@ -54,7 +62,6 @@ Project::loadFile(const QString &fileName)
     editor->open(fileName);
 
     QMdiSubWindow *sub = pImpl->view->addSubWindow(editor);
-    sub->setWindowTitle(fileName);
     sub->show();
 }
 
@@ -80,10 +87,11 @@ Project::saveFile()
     if (editor->hasFileName()) {
         editor->save();
     } else {
-        QString fileName = Glassmoon::getOpenFileName();
+        QString fileName = Glassmoon::getSaveFileName();
         if (fileName.isNull() || fileName.isEmpty()) {
-            editor->save(fileName);
+            return;
         }
+        editor->save(fileName);
     }
 }
 

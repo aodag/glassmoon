@@ -34,6 +34,7 @@ public slots:
     virtual void open(const QString &fileName);
     virtual void save();
     virtual void save(const QString &fileName);
+    virtual void onModificationChanged(bool changed);
 };
 
 #endif

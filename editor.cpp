@@ -80,6 +80,8 @@ TextEditor::TextEditor(QWidget *parent)
     layout->addWidget(pImpl->textEdit);
     this->setLayout(layout);
     pImpl->highlighter = new Highlighter(pImpl->textEdit->document());
+    connect(pImpl->textEdit->document(), SIGNAL(modificationChanged(bool)),
+        this, SLOT(onModificationChanged(bool)));
 }
 
 TextEditor::~TextEditor()
@@ -113,11 +115,14 @@ TextEditor::open(const QString &fileName)
     file.close();
     pImpl->textEdit->setPlainText(contents);
     pImpl->fileName = fileName;
+    pImpl->textEdit->document()->setModified(false);
 }
 
 void
 TextEditor::save()
 {
+    if (!hasFileName()) {
+    }
     QFile file(pImpl->fileName);
     if (!file.open(QFile::WriteOnly)) {
         QMessageBox::warning(this, tr("file open error"),
@@ -127,6 +132,7 @@ TextEditor::save()
     QTextStream st(&file);
     st << pImpl->textEdit->document()->toPlainText();
     file.close();
+    pImpl->textEdit->document()->setModified(false);
 }
 
 void
@@ -143,5 +149,16 @@ TextEditor::save(const QString &fileName)
     st.flush();
     file.close();
     pImpl->fileName = fileName;
+    pImpl->textEdit->document()->setModified(false);
+}
+
+void
+TextEditor::onModificationChanged(bool changed)
+{
+    if (changed) {
+        setWindowTitle("* " + pImpl->fileName);
+    } else {
+        setWindowTitle(pImpl->fileName);
+    }
 }
 
