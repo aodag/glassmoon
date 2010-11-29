@@ -6,6 +6,9 @@
 #include <QMessageBox>
 #include <QKeyEvent>
 
+#include "highlighter.h"
+
+
 class MyTextEdit
     :public QTextEdit
 {
@@ -65,6 +68,7 @@ struct TextEditor::Impl
     QTextEdit *textEdit;
     QLayout *layout;
     QString fileName;
+    Highlighter *highlighter;
 };
 
 TextEditor::TextEditor(QWidget *parent)
@@ -75,6 +79,7 @@ TextEditor::TextEditor(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(pImpl->textEdit);
     this->setLayout(layout);
+    pImpl->highlighter = new Highlighter(pImpl->textEdit->document());
 }
 
 TextEditor::~TextEditor()
