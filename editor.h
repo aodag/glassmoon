@@ -18,6 +18,8 @@ public slots:
     virtual void save(const QString &fileName) = 0;
 };
 
+class QTextCursor;
+
 class TextEditor
     :public Editor
 {
@@ -30,7 +32,7 @@ public:
 public:
     virtual bool hasFileName();    
     virtual const QString &fileName();
-    virtual const QString searchText();
+    virtual void searchText(const QString &target);
 public slots:
     virtual void open(const QString &fileName);
     virtual void save();

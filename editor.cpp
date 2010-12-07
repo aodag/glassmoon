@@ -6,6 +6,9 @@
 #include <QMessageBox>
 #include <QKeyEvent>
 #include <QLineEdit>
+#include <QTextCursor>
+#include <QTextFormat>
+#include <QTextCharFormat>
 
 #include "highlighter.h"
 
@@ -173,18 +176,23 @@ TextEditor::onModificationChanged(bool changed)
 void
 TextEditor::searchIncrementaly(const QString &target)
 {
-    pImpl->textEdit->find(target);
+    searchText(target);
 }
 
 void
 TextEditor::searchNext()
 {
-    const QString target = searchText();
-    pImpl->textEdit->find(target);
+    QString target = pImpl->searchEdit->text();
+    searchText(target);
 }
 
-const QString 
-TextEditor::searchText()
+void
+TextEditor::searchText(const QString &target)
 {
-    return pImpl->searchEdit->text();
+    QTextCursor cursor = pImpl->textEdit->document()->find(target);
+    cursor.setPosition(cursor.anchor() + target.length(), QTextCursor::KeepAnchor);
+    QTextCharFormat cformat;
+    cformat.setAnchor(true);
+    cursor.mergeCharFormat(cformat);
+    pImpl->textEdit->setTextCursor(cursor);
 }
