@@ -90,6 +90,18 @@ Glassmoon::initMenu()
     fileSaveAsAction->setShortcut(QKeySequence::SaveAs);
     connect(fileSaveAsAction, SIGNAL(triggered()),
             this, SLOT(saveFileAs()));
+    fileMenu->addSeparator();
+
+    QAction *fileMoveNextAction = fileMenu->addAction(tr("&Next"));
+    fileMoveNextAction->setShortcut(QKeySequence::Forward);
+    connect(fileMoveNextAction, SIGNAL(triggered()),
+            this, SLOT(moveNextFile()));
+    QAction *fileMovePreviousAction = fileMenu->addAction(tr("&Previous"));
+    fileMovePreviousAction->setShortcut(QKeySequence::Back);
+    connect(fileMovePreviousAction, SIGNAL(triggered()),
+            this, SLOT(movePreviousFile()));
+    fileMenu->addSeparator();
+
     QAction *fileCloseAction = fileMenu->addAction(tr("&Close"));
     fileCloseAction->setShortcut(QKeySequence::Close);
     connect(fileCloseAction, SIGNAL(triggered()),
@@ -221,3 +233,16 @@ Glassmoon::addScriptPath(const QString &path)
 {
 }
 
+void 
+Glassmoon::moveNextFile()
+{
+    Project *project = currentProject();
+    project->activateNext();
+}
+
+void
+Glassmoon::movePreviousFile()
+{
+    Project *project = currentProject();
+    project->activatePrevious();
+}

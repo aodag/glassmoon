@@ -30,6 +30,8 @@ public slots:
     void saveFile();
     void saveFileAs();
     void closeFile();
+    void moveNextFile();
+    void movePreviousFile();
     void executeScript(const QString &script);
     void executeScriptFile();
     void executeScriptFile(const QString &fileName);

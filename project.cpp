@@ -143,3 +143,16 @@ Project::indexOfBookmark(const QString &path)
 {
     return pImpl->bookmarks.lastIndexOf(path);
 }
+
+void
+Project::activateNext()
+{
+    pImpl->view->activateNextSubWindow();
+}
+
+void
+Project::activatePrevious()
+{
+    pImpl->view->activatePreviousSubWindow();
+}
+

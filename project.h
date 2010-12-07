@@ -29,6 +29,8 @@ public slots:
     virtual QWidget *projectView();
     virtual const QString& name();
     virtual void addBookmark(const QString &path);
+    void activateNext();
+    void activatePrevious();
 signals:
     void bookmarkAdded(const QString &path);
 
