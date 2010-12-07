@@ -30,11 +30,15 @@ public:
 public:
     virtual bool hasFileName();    
     virtual const QString &fileName();
+    virtual const QString searchText();
 public slots:
     virtual void open(const QString &fileName);
     virtual void save();
     virtual void save(const QString &fileName);
     virtual void onModificationChanged(bool changed);
+    virtual void searchIncrementaly(const QString &target);
+    virtual void searchNext();
+
 };
 
 #endif

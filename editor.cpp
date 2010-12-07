@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QMessageBox>
 #include <QKeyEvent>
+#include <QLineEdit>
 
 #include "highlighter.h"
 
@@ -68,6 +69,7 @@ struct TextEditor::Impl
     QTextEdit *textEdit;
     QLayout *layout;
     QString fileName;
+    QLineEdit *searchEdit;
     Highlighter *highlighter;
 };
 
@@ -82,6 +84,12 @@ TextEditor::TextEditor(QWidget *parent)
     pImpl->highlighter = new Highlighter(pImpl->textEdit->document());
     connect(pImpl->textEdit->document(), SIGNAL(modificationChanged(bool)),
         this, SLOT(onModificationChanged(bool)));
+    pImpl->searchEdit = new QLineEdit(this);
+    layout->addWidget(pImpl->searchEdit);
+    connect(pImpl->searchEdit, SIGNAL(textChanged(const QString &)),
+            this, SLOT(searchIncrementaly(const QString &)));
+    connect(pImpl->searchEdit, SIGNAL(editingFinished()),
+            this, SLOT(searchNext()));
 }
 
 TextEditor::~TextEditor()
@@ -162,3 +170,21 @@ TextEditor::onModificationChanged(bool changed)
     }
 }
 
+void
+TextEditor::searchIncrementaly(const QString &target)
+{
+    pImpl->textEdit->find(target);
+}
+
+void
+TextEditor::searchNext()
+{
+    const QString target = searchText();
+    pImpl->textEdit->find(target);
+}
+
+const QString 
+TextEditor::searchText()
+{
+    return pImpl->searchEdit->text();
+}
