@@ -96,6 +96,7 @@ Glassmoon::initMenu()
             this, SLOT(closeFile()));
     QMenu *projectMenu = mbar->addMenu(tr("&Project"));
     QAction *projectAddAction = projectMenu->addAction(tr("&Add"));
+    projectAddAction->setShortcut(QKeySequence::AddTab);
     connect(projectAddAction, SIGNAL(triggered()),
             this, SLOT(addProject()));
     QAction *addBookmarkAction = projectMenu->addAction(tr("Add &Bookmark"));
