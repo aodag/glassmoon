@@ -25,6 +25,7 @@ public slots:
     void loadFile(const QString &fileName);
     void saveFile(const QString &fileName);
     void saveFile();
+    void closeCurrentFile();
     virtual QWidget *projectView();
     virtual const QString& name();
     virtual void addBookmark(const QString &path);

@@ -90,6 +90,10 @@ Glassmoon::initMenu()
     fileSaveAsAction->setShortcut(QKeySequence::SaveAs);
     connect(fileSaveAsAction, SIGNAL(triggered()),
             this, SLOT(saveFileAs()));
+    QAction *fileCloseAction = fileMenu->addAction(tr("&Close"));
+    fileCloseAction->setShortcut(QKeySequence::Close);
+    connect(fileCloseAction, SIGNAL(triggered()),
+            this, SLOT(closeFile()));
     QMenu *projectMenu = mbar->addMenu(tr("&Project"));
     QAction *projectAddAction = projectMenu->addAction(tr("&Add"));
     connect(projectAddAction, SIGNAL(triggered()),
@@ -173,6 +177,13 @@ Glassmoon::saveFileAs()
 
     Project *project = currentProject();
     project->saveFile(fileName);
+}
+
+void
+Glassmoon::closeFile()
+{
+    Project *project = currentProject();
+    project->closeCurrentFile();
 }
 
 void

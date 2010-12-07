@@ -69,6 +69,9 @@ Editor *
 Project::currentEditor()
 {
     QMdiSubWindow *sub = pImpl->view->activeSubWindow();
+    if (sub == 0) {
+        return 0;
+    }
     Editor *editor = reinterpret_cast<Editor *>(sub->widget());
     return editor;
 }
@@ -93,6 +96,16 @@ Project::saveFile()
         }
         editor->save(fileName);
     }
+}
+
+void
+Project::closeCurrentFile()
+{
+    QMdiSubWindow *sub = pImpl->view->activeSubWindow();
+    if (sub == 0) {
+        return;
+    }
+    sub->close();
 }
 
 QWidget *
